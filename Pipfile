@@ -7,10 +7,15 @@ name = "pypi"
 flask = "*"
 flask-wtf = "*"
 email-validator = "*"
+flask-mongoengine = "*"
+wheel = "*"
+flask-bcrypt = "*"
+flask-login = "*"
 
 [dev-packages]
 pre-commit = "*"
 black = "*"
+flask-debugtoolbar = "*"
 
 [requires]
 python_version = "3.8"
