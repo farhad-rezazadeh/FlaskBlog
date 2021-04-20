@@ -34,4 +34,4 @@ class LoginForm(FlaskForm):
         try:
             User.objects.get(email=field.data)
         except:
-            raise ValidationError("There is already account with this Email!")
+            raise ValidationError("There is not account with this Email!")
