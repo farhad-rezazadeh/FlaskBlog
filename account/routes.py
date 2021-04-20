@@ -8,11 +8,12 @@ from account.forms import RegistrationForm, LoginForm
 
 @app.route("/account/register", methods=["GET", "POST"])
 def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("home"))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode("utf-8")
         user = User(email=form.email.data, username=form.username.data, password=hashed_password).save()
-        login_user(user)
         flash(f"Account created for {form.username.data}!", category="success")
         return redirect(url_for("home"))
     return render_template("account/register.html", title="Register", form=form)

@@ -1,7 +1,9 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from markupsafe import Markup
+
+from account.models import User
 
 
 class RegistrationForm(FlaskForm):
@@ -11,6 +13,12 @@ class RegistrationForm(FlaskForm):
     confirm_password = PasswordField(validators=[DataRequired(), EqualTo("password")])
     submit = SubmitField("Sign Up")
 
+    def validate_email(self, field):
+        try:
+            User.objects.get(email=field.data)
+        except:
+            raise ValidationError("There is already account with this Email!")
+
 
 class LoginForm(FlaskForm):
     remember_markup = Markup('<span class="caption">Remember me</span>')
@@ -19,3 +27,9 @@ class LoginForm(FlaskForm):
     password = PasswordField(validators=[DataRequired()])
     remember = BooleanField("Remember me")
     submit = SubmitField("Log In")
+
+    def validate_email(self, field):
+        try:
+            User.objects.get(email=field.data)
+        except:
+            raise ValidationError("There is already account with this Email!")
