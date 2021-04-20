@@ -17,6 +17,8 @@ class RegistrationForm(FlaskForm):
         try:
             User.objects.get(email=field.data)
         except:
+            pass
+        else:
             raise ValidationError("There is already account with this Email!")
 
 
