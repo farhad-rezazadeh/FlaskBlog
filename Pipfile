@@ -11,6 +11,8 @@ flask-mongoengine = "*"
 wheel = "*"
 flask-bcrypt = "*"
 flask-login = "*"
+flask-mail = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pre-commit = "*"

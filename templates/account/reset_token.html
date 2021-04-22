@@ -8,26 +8,6 @@
               </div>
         </div>
         {{ form.hidden_tag() }}
-        <div class="form-group first">
-            {{ form.username.label() }}
-            {{ form.username(class="form-control") }}
-            {% if form.username.errors %}
-                {% for error in form.username.errors %}
-                    <small style="color:red" class="text-danger">{{ error }}</small>
-                {% endfor %}
-
-            {% endif %}
-        </div>
-        <div class="form-group">
-            {{ form.email.label() }}
-            {{ form.email(class="form-control") }}
-            {% if form.email.errors %}
-                {% for error in form.email.errors %}
-                    <small style="color:red" class="text-danger">{{ error }}</small>
-                {% endfor %}
-
-            {% endif %}
-        </div>
         <div class="form-group">
             {{ form.password.label() }}
             {{ form.password(class="form-control")}}
@@ -35,7 +15,6 @@
                 {% for error in form.password.errors %}
                     <small style="color:red" class="text-danger">{{ error }}</small>
                 {% endfor %}
-
             {% endif %}
         </div>
         <div class="form-group last mb-4">
@@ -45,7 +24,6 @@
                 {% for error in form.confirm_password.errors %}
                     <small style="color:red" class="text-danger">{{ error }}</small>
                 {% endfor %}
-
             {% endif %}
         </div>
 

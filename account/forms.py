@@ -35,3 +35,19 @@ class LoginForm(FlaskForm):
             User.objects.get(email=field.data)
         except:
             raise ValidationError("There is not account with this Email!")
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField(validators=[DataRequired(), Email()])
+    submit = SubmitField("Request Password Reset")
+
+    def validate_email(self, field):
+        user = User.objects.filter(email=field.data).first()
+        if user is None:
+            raise ValidationError("There is no account with that Email!!")
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField(validators=[DataRequired()])
+    confirm_password = PasswordField(validators=[DataRequired(), EqualTo("password")])
+    submit = SubmitField("Reset Password")
