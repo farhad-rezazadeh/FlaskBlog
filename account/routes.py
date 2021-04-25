@@ -2,7 +2,7 @@ from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
-from config import app, bcrypt, mail
+from config import app, bcrypt, mail, oauth
 from account.models import User
 from account.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm
 
@@ -83,3 +83,30 @@ def reset_token(token):
         flash(f"Your password has been update!", category="success")
         return redirect(url_for("home"))
     return render_template("account/reset_token.html", title="Reset Password", form=form)
+
+
+@app.route("/google_login")
+def google_login():
+    google = oauth.create_client("google")  # create the google oauth client
+    redirect_uri = url_for("authorize", _external=True)
+    return google.authorize_redirect(redirect_uri)
+
+
+@app.route("/authorize")
+def authorize():
+    google = oauth.create_client("google")  # create the google oauth client
+    token = google.authorize_access_token()  # Access token from google (needed to get user info)
+    resp = google.get("userinfo")  # userinfo contains stuff u specificed in the scrope
+    user_info = resp.json()
+    user = oauth.google.userinfo()  # uses openid endpoint to fetch user info
+    # Here you use the profile/user data that you got and query your database find/register the user
+    # and set ur own data in the session not the profile from google
+    user = User.objects.filter(email=user.email).first()
+    if user:
+        login_user(user, remember=False)
+        flash("You have been logged in!", "success")
+        next_page = request.args.get("next")
+        return redirect(next_page) if next_page else redirect(url_for("home"))
+    else:
+        flash("Login unsuccessful", "danger")
+    return redirect(url_for("login"))
