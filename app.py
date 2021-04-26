@@ -1,3 +1,5 @@
+from flask import render_template
+
 from config import app
 
 
@@ -7,7 +9,8 @@ def home():
 
 
 # Routs
-from account.routes import *
+from account import routes
+from account.admin import routes
 
 
 if __name__ == "__main__":
