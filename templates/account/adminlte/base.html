@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AdminLTE 3 | Dashboard</title>
-
+  {% if title %}
+    <title>Flask Blog - {{ title }}</title>
+  {% else %}
+    <title>Flask Blog</title>
+  {% endif %}
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
@@ -45,6 +48,9 @@
         <a href="{{ url_for("home")  }}" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+        <a href="{{ url_for("logout")  }}" class="nav-link">Log out</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
         <a href="" class="nav-link">Contact</a>
       </li>
     </ul>
@@ -53,6 +59,18 @@
     {% include 'account/adminlte/sidebar.html' %}
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    <div class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1 class="m-0 text-dark">{% block title %}عنوان صفحه{% endblock %}</h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
+      </div><!-- /.container-fluid -->
+    </div>
+    <!-- /.content-header -->
+
+    <!-- Main content -->
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">

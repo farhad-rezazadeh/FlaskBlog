@@ -54,3 +54,7 @@ google = oauth.register(
     userinfo_endpoint="https://openidconnect.googleapis.com/v1/userinfo",
     client_kwargs={"scope": "openid email profile"},
 )
+
+
+# Routs
+from account import routes

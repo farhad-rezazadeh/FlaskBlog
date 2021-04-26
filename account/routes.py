@@ -1,10 +1,14 @@
+import os
+import secrets
+from PIL import Image
+
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
 from config import app, bcrypt, mail, oauth
 from account.models import User
-from account.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm
+from account.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, UpdateAccountForm
 
 
 @app.route("/account/register", methods=["GET", "POST"])
@@ -110,3 +114,38 @@ def authorize():
     else:
         flash("Login unsuccessful", "danger")
     return redirect(url_for("login"))
+
+
+def save_picture(form_picture):
+    random_hex = secrets.token_hex(8)
+    _, f_ext = os.path.splitext(form_picture.filename)
+    picture_fn = random_hex + f_ext
+    picture_path = os.path.join(app.root_path, "static/profile_pics", picture_fn)
+
+    output_size = (150, 150)
+    i = Image.open(form_picture)
+    i.thumbnail(output_size)
+    i.save(picture_path)
+
+    return picture_fn
+
+
+@app.route("/account/profile", methods=["GET", "POST"])
+@login_required
+def profile():
+    form = UpdateAccountForm()
+    if form.validate_on_submit():
+        user = User.objects.filter(email=current_user.email).first()
+        user.username = form.username.data
+        user.email = form.email.data
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data)
+            user.image = picture_file
+        user.save()
+        flash("your account has been updated!", "success")
+        return redirect(url_for("profile"))
+    elif request.method == "GET":
+        form.username.data = current_user.username
+        form.email.data = current_user.email
+    image_file = url_for("static", filename=f"profile_pics/{current_user.image}")
+    return render_template("account/adminlte/profile.html", title="Account", image_file=image_file, form=form)

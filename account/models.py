@@ -26,6 +26,9 @@ class User(UserMixin, db.Document):
     # User information
     username = db.StringField(default="")
 
+    # User image
+    image = db.StringField(default="default.jpg")
+
     # Relationships
     posts = db.ListField(db.StringField(), default=[])
 
