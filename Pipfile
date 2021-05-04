@@ -15,6 +15,7 @@ flask-mail = "*"
 python-dotenv = "*"
 authlib = "*"
 pillow = "*"
+flask-mdeditor = "*"
 
 [dev-packages]
 pre-commit = "*"

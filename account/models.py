@@ -1,4 +1,5 @@
 import uuid
+import datetime
 
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask_login import UserMixin
@@ -44,3 +45,19 @@ class User(UserMixin, db.Document):
         except:
             return None
         return User.objects.get(id=user_id)
+
+
+class Post(db.Document):
+    id = db.StringField(default=lambda: str(uuid.uuid4()), primary_key=True)
+    title = db.StringField(max_length=255, required=True)
+    slug = db.StringField(max_length=255, required=True, unique=True)
+    date_posted = db.DateTimeField(default=datetime.datetime.now, required=True)
+    content = db.StringField(required=True)
+    author = db.ReferenceField(User, required=True)
+
+    meta = {
+        "allow_inheritance": False,
+        "indexes": ["-date_posted", "slug", "title"],
+        "ordering": ["-date_posted"],
+        "collection": "posts",
+    }

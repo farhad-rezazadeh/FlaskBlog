@@ -1,0 +1,77 @@
+{% extends 'account/adminlte/base.html' %}
+{% block title %}{{ title }}{% endblock %}
+{% block main %}
+    <div class="col-md-12">
+    <div class="card card-primary">
+        <div class="card-header">
+            <h3 class="card-title mb-0 float-left">New Article</h3>
+        </div>
+        <div class="card-body">
+            <div class="mx-4">
+                {% with  messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert alert-{{ category }}">
+                            {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+            </div>
+            <form method="post" enctype="multipart/form-data">{{ form.hidden_tag() }}
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.title.label(class="form-control-label") }}
+
+                        {% if form.title.errors %}
+                            {{ form.title(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.title.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.title(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-6">
+                        {{ form.slug.label(class="form-control-label") }}
+                        {% if form.slug.errors %}
+                            {{ form.slug(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.slug.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.slug(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-12">
+{#                        {{ form.content.label(class="form-control-label") }}#}
+{##}
+{#                        {% if form.content.errors %}#}
+{#                            {{ form.content(class="form-control form-control-lg is-invalid") }}#}
+{#                            <div class="invalid-feedback">#}
+{#                                {% for error in form.content.errors %}#}
+{#                                    <span>{{ error }}</span>#}
+{#                                {% endfor %}#}
+{#                            </div>#}
+{#                        {% else %}#}
+{#                            {{ form.content(class="form-control form-control-lg") }}#}
+{#                        {% endif %}#}
+{#                        {{ simplemde.load }}#}
+                        {{ form.content.label }} {{ form.content() }}
+                    </div>
+{#                    <div class="col-6">#}
+{#                        {{ form.thumbnail|as_crispy_field }}#}
+{#                        {{ form.publish|as_crispy_field }}#}
+{#                    </div>#}
+                </div>
+                    {{ form.submit(class="btn btn-success mt-3") }}
+
+            </form>
+        </div>
+    </div>
+    </div>
+{% endblock %}

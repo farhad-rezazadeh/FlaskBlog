@@ -7,8 +7,8 @@ from flask_login import login_user, current_user, logout_user, login_required
 from flask_mail import Message
 
 from config import app, bcrypt, mail, oauth
-from account.models import User
-from account.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, UpdateAccountForm
+from account.models import User, Post
+from account.forms import RegistrationForm, LoginForm, RequestResetForm, ResetPasswordForm, UpdateAccountForm, PostForm
 
 
 @app.route("/account/register", methods=["GET", "POST"])
@@ -149,3 +149,15 @@ def profile():
         form.email.data = current_user.email
     image_file = url_for("static", filename=f"profile_pics/{current_user.image}")
     return render_template("account/adminlte/profile.html", title="Account", image_file=image_file, form=form)
+
+
+@app.route("/account/post/new", methods=["GET", "POST"])
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        user = User.objects.get_or_404(id=current_user.id)
+        post = Post(title=form.title.data, content=form.content.data, slug=form.slug.data, author=user).save()
+        flash("Your post has been created!", "success")
+        return redirect(url_for("new_post"))
+    return render_template("account/adminlte/create_post.html", title="New Post", form=form, legend="New Post")

@@ -8,6 +8,7 @@ from authlib.integrations.flask_client import OAuth
 
 # from flask_debugtoolbar import DebugToolbarExtension
 from flask_login import LoginManager
+from flask_mdeditor import MDEditor
 from flask_mongoengine import MongoEngine
 from flask_mail import Mail
 
@@ -55,6 +56,12 @@ google = oauth.register(
     client_kwargs={"scope": "openid email profile"},
 )
 
+# Flask-MDE
+app.config["MDEDITOR_LANGUAGE"] = "en"
+app.config["MDEDITOR_FILE_UPLOADER"] = os.path.join(
+    app.root_path, "uploads"
+)  # this floder uesd to save your uploaded image
+mdeditor = MDEditor(app)
 
 # Routs
 from account import routes

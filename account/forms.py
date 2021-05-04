@@ -1,3 +1,4 @@
+from flask_mdeditor import MDEditorField
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
 from flask_wtf.file import FileField, FileAllowed
@@ -5,7 +6,7 @@ from flask_login import current_user
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from markupsafe import Markup
 
-from account.models import User
+from account.models import User, Post
 
 
 class RegistrationForm(FlaskForm):
@@ -77,3 +78,16 @@ class UpdateAccountForm(FlaskForm):
             user = User.objects.filter(email=email.data).first()
             if user:
                 raise ValidationError("That email is taken. Please choose a different one.")
+
+
+class PostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    slug = StringField("Slug", validators=[DataRequired()])
+    content = MDEditorField("Content", validators=[DataRequired()])
+
+    submit = SubmitField("Post")
+
+    def validate_slug(self, slug):
+        post = Post.objects.filter(slug=slug.data).first()
+        if post:
+            raise ValidationError("That Slug is taken. Please choose a different one.")
