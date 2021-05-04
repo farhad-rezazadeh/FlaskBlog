@@ -48,25 +48,19 @@
                         {% endif %}
                     </div>
                     <div class="col-12">
-{#                        {{ form.content.label(class="form-control-label") }}#}
-{##}
-{#                        {% if form.content.errors %}#}
-{#                            {{ form.content(class="form-control form-control-lg is-invalid") }}#}
-{#                            <div class="invalid-feedback">#}
-{#                                {% for error in form.content.errors %}#}
-{#                                    <span>{{ error }}</span>#}
-{#                                {% endfor %}#}
-{#                            </div>#}
-{#                        {% else %}#}
-{#                            {{ form.content(class="form-control form-control-lg") }}#}
-{#                        {% endif %}#}
-{#                        {{ simplemde.load }}#}
-                        {{ form.content.label }} {{ form.content() }}
+                        {{ form.content.label(class="form-control-label") }}
+
+                        {% if form.content.errors %}
+                            {{ form.content(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.content.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.content(class="form-control form-control-lg") }}
+                        {% endif %}
                     </div>
-{#                    <div class="col-6">#}
-{#                        {{ form.thumbnail|as_crispy_field }}#}
-{#                        {{ form.publish|as_crispy_field }}#}
-{#                    </div>#}
                 </div>
                     {{ form.submit(class="btn btn-success mt-3") }}
 

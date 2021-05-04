@@ -151,13 +151,15 @@ def profile():
     return render_template("account/adminlte/profile.html", title="Account", image_file=image_file, form=form)
 
 
-@app.route("/account/post/new", methods=["GET", "POST"])
+@app.route("/account/article/new", methods=["GET", "POST"])
 @login_required
-def new_post():
+def new_article():
     form = PostForm()
     if form.validate_on_submit():
         user = User.objects.get_or_404(id=current_user.id)
         post = Post(title=form.title.data, content=form.content.data, slug=form.slug.data, author=user).save()
         flash("Your post has been created!", "success")
-        return redirect(url_for("new_post"))
-    return render_template("account/adminlte/create_post.html", title="New Post", form=form, legend="New Post")
+        return redirect(url_for("new_article"))
+    return render_template(
+        "account/adminlte/create_update_article.html", title="New Article", form=form, legend="New Article"
+    )
