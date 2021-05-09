@@ -159,21 +159,21 @@ def profile():
     return render_template("account/adminlte/profile.html", title="Account", image_file=image_file, form=form)
 
 
-@app.route("/account/article/new", methods=["GET", "POST"])
+@app.route("/account/post/new", methods=["GET", "POST"])
 @login_required
-def new_article():
+def new_post():
     form = PostForm()
     if form.validate_on_submit():
         user = User.objects.get_or_404(id=current_user.id)
         post = Post(title=form.title.data, content=form.content.data, slug=form.slug.data, author=user).save()
         flash("Your post has been created!", "success")
-        return redirect(url_for("new_article"))
-    return render_template("account/adminlte/create_article.html", title="New Article", form=form)
+        return redirect(url_for("posts"))
+    return render_template("account/adminlte/create_post.html", title="New Article", form=form)
 
 
-@app.route("/account/article/update/<string:slug>", methods=["GET", "POST"])
+@app.route("/account/post/update/<string:slug>", methods=["GET", "POST"])
 @login_required
-def update_article(slug):
+def update_post(slug):
     post = Post.objects.get_or_404(slug=slug)
     if post.author != current_user:
         abort(403)
@@ -187,4 +187,11 @@ def update_article(slug):
     elif request.method == "GET":
         form.title.data = post.title
         form.content.data = post.content
-    return render_template("account/adminlte/update_article.html", title="Update Post", form=form)
+    return render_template("account/adminlte/update_post.html", title="Update Post", form=form)
+
+
+@app.route("/account/posts")
+@login_required
+def posts():
+    _posts = Post.objects.filter(author=current_user.id)
+    return render_template("account/adminlte/posts.html", title="Articles", posts=_posts)
