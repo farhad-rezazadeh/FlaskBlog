@@ -91,3 +91,10 @@ class PostForm(FlaskForm):
         post = Post.objects.filter(slug=slug.data).first()
         if post:
             raise ValidationError("That Slug is taken. Please choose a different one.")
+
+
+class UpdatePostForm(FlaskForm):
+    title = StringField("Title", validators=[DataRequired()])
+    content = MDEditorField("Content", validators=[DataRequired()])
+
+    submit = SubmitField("Post")
