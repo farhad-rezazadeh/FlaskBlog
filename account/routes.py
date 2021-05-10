@@ -183,7 +183,7 @@ def update_post(slug):
         post.content = form.content.data
         post.save()
         flash("Your post has been updated!", "success")
-        return redirect(url_for("home"))
+        return redirect(url_for("posts"))
     elif request.method == "GET":
         form.title.data = post.title
         form.content.data = post.content

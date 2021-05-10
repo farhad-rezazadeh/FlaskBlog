@@ -12,6 +12,9 @@ from flask_mdeditor.utils import random_filename
 
 from flask_mdeditor.fields import MDEditorField  # noqa
 
+# i add this
+from PIL import Image
+
 
 class _MDEditor:
 
@@ -142,7 +145,13 @@ class MDEditor(object):
             return upload_fail(message="Image only!")
         if os.path.exists(current_app.config["MDEDITOR_FILE_UPLOADER"]):  # 如果路径存在
             save_filename = random_filename(f.filename)
-            f.save(os.path.join(current_app.config["MDEDITOR_FILE_UPLOADER"], save_filename))
+            # --------------- i add this --------------------------------------
+            output_size = (750, 750)
+            i = Image.open(f)
+            i.thumbnail(output_size)
+            i.save(os.path.join(current_app.config["MDEDITOR_FILE_UPLOADER"], save_filename))
+            # -------------------------------------------------
+            # f.save(os.path.join(current_app.config["MDEDITOR_FILE_UPLOADER"], save_filename))
             return upload_success(url=url_for("mdeditor.__files_show", filename=save_filename, _external=True))
         else:
             return upload_fail(message="Fail to Upload")

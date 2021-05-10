@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 
 from flask import Flask, render_template
 from flask_bcrypt import Bcrypt
+from flaskext.markdown import Markdown
 from authlib.integrations.flask_client import OAuth
 
 # from flask_debugtoolbar import DebugToolbarExtension
@@ -62,6 +63,10 @@ app.config["MDEDITOR_FILE_UPLOADER"] = os.path.join(
     app.root_path, "uploads"
 )  # this floder uesd to save your uploaded image
 mdeditor = MDEditor(app)
+
+
+# initialize markdown
+Markdown(app)
 
 # Routs
 from account import routes

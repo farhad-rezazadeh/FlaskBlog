@@ -21,36 +21,22 @@
                   <thead>
                     <tr>
                         <th>title</th>
-{#                        <th>دسته بندی</th>#}
                         <th>summery</th>
                         <th>author</th>
                         <th>publish date</th>
-{#                        <th>وضعیت</th>#}
                     </tr>
                   </thead>
                   <tbody>
                   {% for post in posts %}
                       <tr>
                           <td>{{ post.title }}</td>
-                          <td>summery</td>
+                          <td>{{ post.content|markdown|truncate(20)|safe }}</td>
                           <td>{{ post.author.username }}</td>
                           <td>{{ post.date_posted }}</td>
-{#                          <td><img src="{{ article.thumbnail.url }}" width="120"></td>#}
-{#                          <td>{{ article.category_to_str }}</td>#}
-{#                          <td>{{ article.author.get_full_name }}</td>#}
-{#                          <td>{{ article.description| striptags | truncatewords:"20" }}</td>#}
-{#                          <td>{{ article.jpublish }}</td>#}
-{#                          <td>#}
-{#                              {% if article.status == "p" %}#}
-{#                                  <span class="badge badge-success">منتشر شده</span>#}
-{#                                  <a target="_blank" class="badge badge-primary" href="{% url "blog:detail" article.slug %}">نمایش مقاله در سایت</a>#}
-{#                              {% else %}#}
-{#                                  <span class="badge badge-danger">پیش نویس</span>#}
-{#                              {% endif %}#}
-{#                          </td>#}
                             <td>
-                                <a target="_blank" class="badge badge-primary" href="{{ url_for('update_post', slug=post.slug) }}">Edit</a>
-                                <a target="_blank" class="badge badge-danger" href="{{ url_for('delete_post', slug=post.slug) }}">Delete</a>
+                                <a target="_blank" class="badge badge-success" href="{{ url_for('post_detail', slug=post.slug) }}">View in Blog</a>
+                                <a class="badge badge-primary" href="{{ url_for('update_post', slug=post.slug) }}">Edit</a>
+                                <a class="badge badge-danger" href="{{ url_for('delete_post', slug=post.slug) }}">Delete</a>
                             </td>
                     </tr>
                   {% endfor %}

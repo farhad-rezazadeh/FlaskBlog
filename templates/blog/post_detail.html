@@ -1,0 +1,4 @@
+{% extends  "blog/layout.html" %}
+{% block main %}
+    {{ post.content|markdown }}
+{% endblock %}
