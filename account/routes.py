@@ -190,6 +190,17 @@ def update_post(slug):
     return render_template("account/adminlte/update_post.html", title="Update Post", form=form)
 
 
+@app.route("/account/post/delete/<string:slug>", methods=["GET"])
+@login_required
+def delete_post(slug):
+    post = Post.objects.get_or_404(slug=slug)
+    if post.author != current_user:
+        abort(403)
+    post.delete()
+    flash("Your post has been deleted!", "success")
+    return redirect(url_for("posts"))
+
+
 @app.route("/account/posts")
 @login_required
 def posts():

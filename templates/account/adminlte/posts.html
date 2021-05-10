@@ -20,26 +20,21 @@
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                        <th>عنوان مقاله</th>
-                        <th>تصویر بندانگشتی</th>
-                        <th>دسته بندی</th>
-                        <th>خلاصه</th>
-                        <th>نویسنده</th>
-                        <th>زمان انتشار</th>
-                        <th>وضعیت</th>
+                        <th>title</th>
+{#                        <th>دسته بندی</th>#}
+                        <th>summery</th>
+                        <th>author</th>
+                        <th>publish date</th>
+{#                        <th>وضعیت</th>#}
                     </tr>
                   </thead>
                   <tbody>
                   {% for post in posts %}
                       <tr>
-                          <td>
-                              folon bisar
-{#                              {% if article.status == "d" or user.is_superuser %}#}
-{#                                  <a href="{% url 'account:article-update' article.pk %}">{{ article.title }}</a>#}
-{#                              {% else %}#}
-{#                                  {{ article.title }}#}
-{#                              {% endif %}#}
-                          </td>
+                          <td>{{ post.title }}</td>
+                          <td>summery</td>
+                          <td>{{ post.author.username }}</td>
+                          <td>{{ post.date_posted }}</td>
 {#                          <td><img src="{{ article.thumbnail.url }}" width="120"></td>#}
 {#                          <td>{{ article.category_to_str }}</td>#}
 {#                          <td>{{ article.author.get_full_name }}</td>#}
@@ -53,6 +48,10 @@
 {#                                  <span class="badge badge-danger">پیش نویس</span>#}
 {#                              {% endif %}#}
 {#                          </td>#}
+                            <td>
+                                <a target="_blank" class="badge badge-primary" href="{{ url_for('update_post', slug=post.slug) }}">Edit</a>
+                                <a target="_blank" class="badge badge-danger" href="{{ url_for('delete_post', slug=post.slug) }}">Delete</a>
+                            </td>
                     </tr>
                   {% endfor %}
                   </tbody>
