@@ -72,8 +72,8 @@
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
           <div class="site-heading">
-            <h1>Clean Blog</h1>
-            <span class="subheading">A Blog Theme by Start Bootstrap</span>
+            <h1>Flask Blog</h1>
+            <span class="subheading">A Free Blog For Your Opinions</span>
           </div>
         </div>
       </div>
@@ -111,6 +111,16 @@
           {% endblock %}
 
         <!-- Pager -->
+          {% if posts  %}
+            <div class="clearfix pager-button">
+                {% if posts.has_prev %}
+                    <a class="btn btn-primary float-left mr-3" href="{{ url_for("home", page=posts.prev_num) }}" style="font-family: Sahel">&larr; previous</a>
+                {% endif %}
+                {% if posts.has_next %}
+                    <a class="btn btn-primary float-right ml-3" href="{{ url_for("home", page=posts.next_num) }}" style="font-family: Sahel">next &rarr;</a>
+                {% endif %}
+            </div>
+          {% endif %}
 {#        <div class="clearfix">#}
 {#          <a class="btn btn-primary float-right" href="#">Older Posts &rarr;</a>#}
 {#        </div>#}
